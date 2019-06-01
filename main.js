@@ -1,8 +1,8 @@
 "ui";
 
 var color = "#4390E6";
-const urlGetNum = "192.168.31.105:3000/numInQuery";
-const urlPostAccount = "192.168.31.105:3000/account";
+const urlGetNum = "192.168.111.128:4000/numInQuery";
+const urlPostAccount = "192.168.111.128:4000/account";
 
 ui.layout(
   <frame>
@@ -91,7 +91,7 @@ ui.tabs.setupWithViewPager(ui.viewpager);
 /**
  * Button Action
  */
-
+// TODO Complete the launch function
 ui.launch.click(function() {
   let storage = storages.create("account");
   if (storage) {
@@ -102,28 +102,60 @@ ui.launch.click(function() {
 });
 
 ui.refreshNum.click(function() {
-  let res = http.get(urlGetNum);
-  alert("队列长度", "队列中还有 " + res.body.json().code + " 位");
-  let initStorage = storages.create("rawAccount");
-  alert(JSON.stringify(initStorage.get("phone").mText));
-  setText(0, initStorage.get("phone"));
-  setText(1, initStorage.get("password"));
+  let code = 0;
+  let request = threads.start(function() {
+    let res = http.get(urlGetNum);
+    let result = res.body.json();
+    code = res.statusCode;
+    alert("队列长度", "队列中还有 " + result.code + " 位");
+
+    let initStorage = storages.create("rawAccount");
+    let phone = new String();
+    let password = new String();
+    for (let index = 0; index < 11; index++) {
+      var element = initStorage.get("phone").mText[index];
+      phone = phone.concat(element);
+    }
+    for (let index = 0; index < 6; index++) {
+      var element = initStorage.get("password").mText[index];
+      password = password.concat(element);
+    }
+    setText(0, phone);
+    setText(1, password);
+  });
+  request.join(3000);
+  if (code === 0) {
+    request.interrupt();
+    toast("服务器连接超时！");
+  }
 });
 
+// TODO Check phone number locally
 ui.postData.click(function() {
-  let storage = storages.create("rawAccount");
-  storage.put("phone", ui.phone.getText());
-  storage.put("password", ui.password.getText());
-  let res = http.post(urlPostAccount, {
-    phone: ui.phone.getText(),
-    password: ui.password.getText(),
+  let code = 0;
+  let request = threads.start(function() {
+    let res = http.post(urlPostAccount, {
+      phone: ui.phone.getText(),
+      password: ui.password.getText(),
+    });
+
+    let result = res.body.json();
+    code = res.statusCode;
+
+    if (result.code === 0) {
+      let storage = storages.create("account");
+      storage.put("phone", result.data.phone);
+      storage.put("ciphers", result.data.ciphers);
+    } else if (result.code === 1 || result.code === -1) {
+      let storage = storages.create("rawAccount");
+      storage.put("phone", ui.phone.getText());
+      storage.put("password", ui.password.getText());
+    }
+    alert("提交账号", result.message);
   });
-  alert("提交账号", res.body.json().message, () => {
-    toast(res.body.json().code);
-    // if (res.body.json().code === 1) {
-    //     let storage = storages.create("account");
-    //     storage.put("phone", res.body.json().data.phone);
-    //     storage.put("ciphers", res.body.json().data.ciphers);
-    //   }
-  });
+  request.join(3000);
+  if (code === 0) {
+    request.interrupt();
+    toast("服务器连接超时！");
+  }
 });
