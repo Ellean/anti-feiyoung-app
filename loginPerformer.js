@@ -1,6 +1,8 @@
 var urlToGetNextUrl = "baidu.com";
-var urlToGetSessionid = "";
-var urlToLogin = "";
+var urlToGetSessionid =
+  "192.168.43.183:8001/?userip=100.64.47.23&wlanacname&nasip=59.175.245.222&usermac=8c-85-90-7c-99-28 ";
+var urlToLogin =
+  "192.168.43.183:8001/wispr_auth.jsp?sessionid=108974259&aidcauthtype=0&usermac=8c-85-90-7c-99-28&wlanacname=059.175.245.222&wlanuserip=100.64.47.23";
 var timeStamp = "";
 
 const service = (phone, cipherForToday) => {
