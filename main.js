@@ -1,8 +1,9 @@
 "ui";
 
 var color = "#4390E6";
-const urlGetNum = "192.168.111.128:4000/numInQuery";
-const urlPostAccount = "192.168.111.128:4000/account";
+const urlGetNum = "192.168.31.105:4000/numInQuery";
+const urlPostAccount = "192.168.31.105:4000/account";
+const loginPerformer = require("./loginPerformer");
 
 ui.layout(
   <frame>
@@ -20,6 +21,9 @@ ui.layout(
             layout_gravity="center"
             src="file://./src/rocket.png"
           />
+          <horizontal gravity="center" marginTop="300">
+            <progressbar id="progress" w="300" style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"/>
+          </horizontal>
         </frame>
         <frame>
           <button
@@ -91,13 +95,14 @@ ui.tabs.setupWithViewPager(ui.viewpager);
 /**
  * Button Action
  */
-// TODO Complete the launch function
 ui.launch.click(function() {
-  let storage = storages.create("account");
-  if (storage) {
-    alert("警告", "火箭还没有造完！");
+  let account = storages.create("account");
+  let ciphers = account.get("ciphers");
+  let phone = account.get("phone");
+  if (ciphers) {
+    loginPerformer(phone, ciphers);
   } else {
-    alert("提示", "并没有油让你发射，请前往获取燃料！");
+    alert("提示", "油箱空空，请前往获取燃料！");
   }
 });
 
@@ -130,7 +135,6 @@ ui.refreshNum.click(function() {
   }
 });
 
-// TODO Check phone number locally
 ui.postData.click(function() {
   let code = 0;
   let request = threads.start(function() {
