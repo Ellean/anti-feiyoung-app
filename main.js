@@ -222,10 +222,10 @@ ui.sendEmail.click(function() {
 ui.launch.click(function() {
   let date = new Date();
   let account = storages.create("account");
-  let cipher = account.get("ciphers")[date.getDate()];
+  let ciphers = account.get("ciphers");
   let phone = account.get("phone");
-  if (cipher) {
-    loginPerformer(phone, cipher);
+  if (ciphers) {
+    loginPerformer(phone, ciphers[date.getDate()]);
   } else {
     alert("提示", "油箱空空，请前往获取燃料！");
   }
