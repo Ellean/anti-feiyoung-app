@@ -1,8 +1,8 @@
 "ui";
 
 var color = "#4390E6";
-const urlGetNum = "l24g972742.zicp.vip:16358/numInQuery";
-const urlPostAccount = "l24g972742.zicp.vip:16358/account";
+const urlGetNum = "anti-feiyoung.younnt.one:4096/numInQuery";
+const urlPostAccount = "anti-feiyoung.younnt.one:4096/account";
 const loginPerformer = require("./loginPerformer");
 
 ui.layout(
