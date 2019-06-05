@@ -225,7 +225,8 @@ ui.launch.click(function() {
   let ciphers = account.get("ciphers");
   let phone = account.get("phone");
   if (ciphers) {
-    loginPerformer(phone, ciphers[date.getDate()] - 1);
+    loginPerformer(phone, ciphers[date.getDate()-1]);
+    log(ciphers[date.getDate()-1]);
   } else {
     alert("提示", "油箱空空，请前往获取燃料！");
   }
