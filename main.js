@@ -178,7 +178,7 @@ ui.layout(
         </vertical>
       </viewpager>
     </vertical>
-  </frame>,
+  </frame>
 );
 
 /**
@@ -190,7 +190,7 @@ ui.layout(
  */
 
 ui.about.setText(
-  "1. 本软件仅供测试使用\n2. 本软件由Younntone公益开发，如果你通过购买获得，说明你被坑了！\n3. 本软件不提供任何使用保障，有建议或者BUG反馈可以发邮件给开发者。\n",
+  "1. 本软件仅供测试使用\n2. 本软件由Younntone公益开发，如果你通过购买获得，说明你被坑了！\n3. 本软件不提供任何使用保障，有建议或者BUG反馈可以发邮件给开发者。\n"
 );
 
 activity.setSupportActionBar(ui.toolbar);
@@ -214,7 +214,7 @@ ui.download.click(function() {
 ui.sendEmail.click(function() {
   app.sendEmail({
     email: "younntone@gmail.com",
-    subject: "Anti Feiyoung APP 反馈/建议",
+    subject: "Anti Feiyoung APP 反馈/建议"
   });
 });
 
@@ -266,7 +266,7 @@ ui.postData.click(function() {
   let request = threads.start(function() {
     let res = http.post(urlPostAccount, {
       phone: ui.phone.getText(),
-      password: ui.password.getText(),
+      password: ui.password.getText()
     });
 
     let result = res.body.json();
